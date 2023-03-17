@@ -1,0 +1,80 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib.cm import get_cmap
+import os
+import re
+
+# Fixing random state for reproducibility
+np.random.seed(13)
+
+cmap = get_cmap('Set2')
+cmap2 = get_cmap('Set3')
+colors = cmap.colors
+colors2 = cmap2.colors
+
+
+def plotmm(names):
+    fig, axs = plt.subplots(3, 4, sharex=False, sharey=False, figsize=(12, 16))
+    titles = ['m12', 'm13', 'm14', 'm21', 'm22', 'm23', 'm24', 'm31', 'm32', 'm33', 'm34']
+
+    for index, i in enumerate(np.round(np.linspace(50, 65, 4), 0).astype(int)):
+        df_i = pd.read_csv(names[index], delimiter=',')
+
+        df_i.iloc[4:, :] = df_i.iloc[4:, :].astype(float)
+
+        for j, ax in enumerate(axs.flat[1:]):
+            ax.plot(df_i.iloc[4:, 0], df_i.iloc[4:, j*2+7], color=colors[index], label=f"{i} deg")
+            ax.set_title(titles[j])
+            ax.set_ylim((-3, 3))
+
+        axs[0, 1].legend(loc="upper left")
+
+    return
+
+# names1 = ['M_Au(6nm)_50deg.csv', 'M_Au(6nm)_55deg.csv', 'M_Au(6nm)_60deg.csv', 'M_Au(6nm)_65deg.csv']
+# plotmm(names1)
+# fig.suptitle('Mueller Matrix 6nm', fontsize=34)
+# plt.show()
+#
+# names2 = ['M_Au(3.3nm)_50deg.csv', 'M_Au(3.3nm)_55deg.csv', 'M_Au(3.3nm)_60deg.csv', 'M_Au(3.3nm)_65deg.csv']
+# plotmm(names2)
+# fig.suptitle('Mueller Matrix 3.3nm', fontsize=34)
+# plt.show()
+#
+# names3 = ['M_Au(10nm)_50deg.csv', 'M_Au(10nm)_55deg.csv', 'M_Au(10nm)_60deg.csv', 'M_Au(10nm)_65deg.csv']
+# plotmm(names3)
+# fig.suptitle('Mueller Matrix 10nm', fontsize=34)
+# plt.show()
+#
+#
+# names3 = ['M_Au(5nm)_50deg.csv', 'M_Au(5nm)_55deg.csv','M_Au(5nm)_60deg.csv','M_Au(5nm)_65deg.csv',]
+# plotmm(names3)
+# fig.suptitle('Mueller Matrix 5nm', fontsize=34)
+# plt.show()
+
+
+def plotdepol(names):
+    # Loop through each CSV file and plot the x and y values
+    angles = [50, 55, 60, 65]
+    for i in range(0, len(names)):
+        df = pd.read_csv(names[i], delimiter=',')
+        df.iloc[4:, :] = df.iloc[4:, :].astype(float)
+        print(type(df.iloc[4, 0]))
+        # Extract the x and y values from the dataframe
+
+        x_values = df.iloc[4:, 0]
+        y1_values = df.iloc[4:, 3]
+        y_values = df.iloc[4:, 5]
+
+        # Create a new plot with the x and y values
+        plt.plot(x_values, y1_values, color=colors[i], alpha = 1, linewidth= 0.5 , label = f'P-S {angles[i]}')
+        plt.plot(x_values, y_values, color=colors2[i+5], alpha = 1,  linewidth= 0.5, label = f'S-P {angles[i]}')
+        plt.ylim((0, 3))
+        plt.gcf().set_dpi(1000)
+        plt.legend()
+        plt.title('5nm Depolarisation')
+        plt.show()
+
+
+    return
