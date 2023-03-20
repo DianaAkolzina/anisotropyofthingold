@@ -1,0 +1,50 @@
+
+def plotps(names):
+    # Loop through each CSV file and plot the x and y values
+    angles = [3.3, 5, 6, 10]
+    for i in range(0, len(names)):
+        df = pd.read_csv(names[i], delimiter=',')
+        df.iloc[4:, :] = df.iloc[4:, :].astype(float)
+        print(type(df.iloc[4, 0]))
+        # Extract the x and y values from the dataframe
+
+        x_values = df.iloc[4:, 0]
+        y_values = df.iloc[4:, 5]
+
+        # Create a new plot with the x and y values
+
+        plt.plot(x_values, y_values, color=colors2[i+5], alpha = 1,  linewidth= 0.5, label = f'S-P {angles[i]}nm')
+        plt.ylim((0, 3))
+        plt.gcf().set_dpi(1000)
+        plt.legend()
+        plt.title('50 degrees S-P')
+    plt.show()
+
+
+    return
+
+
+def plotsp(names):
+    # Loop through each CSV file and plot the x and y values
+    angles = [3.3, 5, 6, 10]
+    for i in range(0, len(names)):
+        df = pd.read_csv(names[i], delimiter=',')
+        df.iloc[4:, :] = df.iloc[4:, :].astype(float)
+        print(type(df.iloc[4, 0]))
+        # Extract the x and y values from the dataframe
+
+        x_values = df.iloc[4:, 0]
+        y_values = df.iloc[4:, 3]
+
+        # Create a new plot with the x and y values
+
+        plt.plot(x_values, y_values, color=colors2[i+5], alpha = 1,  linewidth= 0.5, label = f'P-S {angles[i]}nm')
+        plt.ylim((0, 3))
+        plt.gcf().set_dpi(1000)
+        plt.legend()
+        plt.title('50 degrees P-S')
+    plt.show()
+
+
+    return
+
